@@ -11,7 +11,7 @@ macro release
 end
 
 def mysql_connect(options, capacity = 25, timeout = 0.1)
-  Kemal.config.add_handler Kemal::PG.new(conn_url, capacity, timeout)
+  Kemal.config.add_handler Kemal::MySQL.new(options, capacity, timeout)
 end
 
 class HTTP::Request
