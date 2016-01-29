@@ -3,19 +3,19 @@ require "pool/connection"
 require "http"
 
 macro conn
-  env.request.mysql.not_nil!.connection
+  env.mysql.connection
 end
 
 macro release
-  env.request.mysql.not_nil!.release
+  env.mysql.release
 end
 
 def mysql_connect(options, capacity = 25, timeout = 0.1)
   Kemal.config.add_handler Kemal::MySQL.new(options, capacity, timeout)
 end
 
-class HTTP::Request
-  property mysql
+class HTTP::Server::Context
+  property! mysql
 end
 
 class Kemal::MySQL < HTTP::Handler
@@ -27,8 +27,8 @@ class Kemal::MySQL < HTTP::Handler
     end
   end
 
-  def call(request)
-    request.mysql = @mysql
-    call_next(request)
+  def call(context)
+    context.mysql = @mysql
+    call_next(context)
   end
 end
