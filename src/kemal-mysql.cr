@@ -15,10 +15,12 @@ def mysql_connect(options, capacity = 25, timeout = 0.1)
 end
 
 class HTTP::Server::Context
+  @mysql : ConnectionPool(MySQL::Connection) | Nil
   property! mysql
 end
 
 class Kemal::MySQL < HTTP::Handler
+  @mysql : ConnectionPool(MySQL::Connection)
   getter mysql
 
   def initialize(options={} of String => String, capacity = 25, timeout = 0.1)
