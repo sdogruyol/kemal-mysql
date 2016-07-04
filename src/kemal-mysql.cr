@@ -24,7 +24,7 @@ class Kemal::MySQL < HTTP::Handler
   getter mysql
 
   def initialize(options={} of String => String, capacity = 25, timeout = 0.1)
-    @mysql = ConnectionPool.new(capacity: capacity, timeout: timeout) do
+    @mysql = ConnectionPool(MySQL::Connection).new(capacity: capacity, timeout: timeout) do
       ::MySQL.connect(options["host"], options["user"], options["password"], options["db"], 3306_u16, nil)
     end
   end
